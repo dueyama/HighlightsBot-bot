@@ -10,15 +10,10 @@ pip install deepl
 Bot setups
 
 Privileged Gateway Intents
-
 PRESENCE INTENT : OFF
-
 SERVER MEMBERS INTENT : ON
-
 MESSAGE CONTENT INTENT : ON
 
 Bot Permissions. Check the following.
-
 ☑️Read Messages/View Channels
-
 ☑️Send Messages
