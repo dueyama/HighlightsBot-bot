@@ -5,9 +5,9 @@
 #Ver.0.3 2022/10/20
 #Ver.0.4 2022/11/13
 #Ver.1.0 2022/11/17 Change a logic
+#Ver.1.1 2022/11/20
 
 import discord
-import re
 import deepl
 
 intents = discord.Intents.default()
@@ -21,9 +21,6 @@ HLEN = "highlights-en"
 NumOfReactions=1
 
 MessageIdSet = set()
-
-def is_japanese(str):
-	return True if re.search(r'[ぁ-んァ-ン]', str) else False
 
 @client.event
 async def on_ready():
@@ -71,6 +68,7 @@ async def on_reaction_add(reaction, user):
 			t_lang = "EN-US"
 			result = translator.translate_text(msg, target_lang=t_lang)
 			result_txt = result.text 
+			result_txt_en = result.text
 			source_lang = result.detected_source_lang
 
 			if source_lang == "JA":
@@ -93,7 +91,10 @@ async def on_reaction_add(reaction, user):
 			liner2 = "\n----\n"
 
 			channel = discord.utils.get(reaction.message.guild.text_channels, name=org_post)
-			orgMes = msg0 +liner1 + msg + "\n" + liner2 + reaction.message.jump_url
+			if source_lang == "JA" or source_lang == "EN":
+				orgMes = msg0 +liner1 + msg + "\n" + liner2 + reaction.message.jump_url
+			else:
+				orgMes = msg0 +liner1 + msg + "\n" + liner1 + result_txt_en + liner2 + msg1 + reaction.message.jump_url
 			embed1 = discord.Embed(description=orgMes,color=discord.Colour.from_rgb(130, 219, 216))
 			embed1.set_thumbnail(url=reaction.message.author.avatar.url)
 			await channel.send(embed=embed1)
